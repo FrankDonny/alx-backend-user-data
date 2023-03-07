@@ -9,7 +9,7 @@ from flask_cors import CORS, cross_origin
 
 from api.v1.views import app_views
 
-# import os
+import os
 
 
 app = Flask(__name__)

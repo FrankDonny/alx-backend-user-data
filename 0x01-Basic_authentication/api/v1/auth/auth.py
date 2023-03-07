@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """module for class Auth"""
 from typing import List, TypeVar
 
