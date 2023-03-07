@@ -21,19 +21,25 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 def not_found(error) -> str:
     """ Not found handler
     """
-    return jsonify({"error": "Not found"}), 404
+    response = jsonify({"error": "Not found"})
+    response.status_code = 404
+    return response  # type: ignore
 
 
 @app.errorhandler(401)
 def unauthorized(error) -> str:
     """unathorized access"""
-    return jsonify({'error': 'Unauthorized'}), 401
+    response = jsonify({'error': 'Unauthorized'})
+    response.status_code = 401
+    return response  # type: ignore
 
 
 @app.errorhandler(403)
 def forbidden(error) -> str:
     """unathorized access"""
-    return jsonify({'error': 'Forbidden'}), 403
+    response = jsonify({'error': 'Forbidden'})
+    response.status_code = 403
+    return response  # type: ignore
 
 
 if __name__ == "__main__":
