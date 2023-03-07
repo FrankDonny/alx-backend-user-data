@@ -12,7 +12,7 @@ def status() -> str:
     Return:
       - the status of the API
     """
-    return jsonify({"status": "OK"})
+    return jsonify({"status": "OK"})  # type: ignore
 
 
 @app_views.route('/stats/', strict_slashes=False)
@@ -24,7 +24,7 @@ def stats() -> str:
     from models.user import User
     stats = {}
     stats['users'] = User.count()
-    return jsonify(stats)
+    return jsonify(stats)  # type: ignore
 
 
 @app_views.route('/unauthorized')
