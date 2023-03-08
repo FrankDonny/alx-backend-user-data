@@ -26,8 +26,17 @@ class Auth:
 
     def authorization_header(self, request=None) -> str:
         """auth header"""
-        return None  # type: ignore
+        if request is None:
+            return None  # type: ignore
+        if 'Authorization' not in request.headers:
+            return None  # type: ignore
+        else:
+            return request.headers.get('Authorization')
 
     def current_user(self, request=None) -> TypeVar('User'):  # type: ignore
         """current user authentication"""
         return None
+
+
+class BasicAuth(Auth):
+    pass

@@ -3,8 +3,7 @@
 """
 from flask import abort, jsonify
 
-from api.v1.views import app_views
-
+from api.v1.views import app_views  # type: ignore
 
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status() -> str:
