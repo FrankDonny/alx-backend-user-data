@@ -32,8 +32,3 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """current user method"""
         return None
-
-
-class BasicAuth(Auth):
-    """the Basic Auth class"""
-    pass
