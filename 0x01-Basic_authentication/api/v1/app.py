@@ -13,6 +13,29 @@ from api.v1.views import app_views
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+auth = None
+if getenv("AUTH_TYPE") == "auth":
+    from api.v1.auth.auth import Auth
+    auth = Auth()
+
+
+def beforeHandler():
+    """before handler"""
+    if auth is None:
+        return
+    routeList = ['/api/v1/status/',
+                 '/api/v1/unauthorized/', '/api/v1/forbidden/']
+    if request.path[-1] != '/':
+        request.path += '/'
+    if request.path not in routeList:
+        auth.require_auth(request.path, routeList)
+        if not auth.authorization_header(request):
+            abort(401)
+        if not auth.current_user(request):
+            abort(403)
+
+
+app.before_request(beforeHandler)
 
 
 @app.errorhandler(404)
@@ -37,4 +60,4 @@ def forbidden(error) -> str:
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
     port = getenv("API_PORT", "5000")
-    app.run(host=host, port=int(port))
+    app.run(host=host, port=int(port), debug=True)
