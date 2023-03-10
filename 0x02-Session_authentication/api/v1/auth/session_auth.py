@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """module containing the session authentication class"""
 
-from uuid import uuid4
 from os import getenv
+from uuid import uuid4
 
 from api.v1.auth.auth import Auth
 
