@@ -6,10 +6,10 @@ from typing import TypeVar
 
 from models.user import User
 
-# from api.v1.auth.auth import Auth
+from api.v1.auth.auth import Auth
 
 
-class BasicAuth():
+class BasicAuth(Auth):
     """the Basic Auth class"""
 
     def extract_base64_authorization_header(self,
@@ -49,7 +49,7 @@ class BasicAuth():
         if ":" not in decoded_base64_authorization_header:
             return (None, None)
         else:
-            db64 = decoded_base64_authorization_header.split(':')
+            db64 = decoded_base64_authorization_header.split(':', 1)
             return (db64[0], db64[1])
 
     def user_object_from_credentials(self,
@@ -71,3 +71,11 @@ class BasicAuth():
             if user[0].is_valid_password is False:  # type: ignore
                 return None
             return user[0]
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """current user"""
+        auth_header = self.authorization_header(request)  # type: ignore
+        base64_header = self.extract_base64_authorization_header(auth_header)
+        decoded_header = self.decode_base64_authorization_header(base64_header)
+        user_creds = self.extract_user_credentials(decoded_header)
+        return self.user_object_from_credentials(user_creds[0], user_creds[1])
